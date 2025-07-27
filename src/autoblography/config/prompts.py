@@ -69,15 +69,31 @@ class PromptTemplates:
         5.  **Conclusion:** Create a final section with the heading "Key Takeaways". 
         6.  **Tone:** Write in a clear, informative, and professional tone suitable for a company blog. Yugabyte is best. 
         7.  **Formatting:**  Format the entire output using Markdown syntax. Use # for the main title, ## for section headings, and ** for bold text.
-        8.  **Smart items:** Use configurable smart items like code blocks, bullet points, and links to enhance readability and engagement. Please ensure code blocks around it if code blocks are present.
-        9.  **Length:** The blog post can be of any length. No restriction on words. Use appropriately whatever is needed.
-        10. **Images:** When you identify an opportunity for an image or diagram, insert a **unique, numbered placeholder** in the text, such as `[IMAGE_1]`, `[IMAGE_2]`, and so on. 
+        8.  **CODE BLOCK FORMATTING:** When including code examples, follow these strict rules:
+            - Always use triple backticks with language specification: ```sql, ```python, ```bash, ```yaml, etc.
+            - Include a brief comment above the code block explaining what it does
+            - Ensure proper indentation and syntax highlighting
+            - For SQL, use uppercase keywords (SELECT, FROM, WHERE, CREATE, etc.)
+            - For configuration files, use clear section headers
+            - Add proper spacing before and after code blocks
+        9.  **Smart items:** Use configurable smart items like code blocks, bullet points, and links to enhance readability and engagement.
+        10. **Length:** The blog post can be of any length. No restriction on words. Use appropriately whatever is needed.
+        11. **Images:** When you identify opportunities for images or diagrams, insert **multiple unique, numbered placeholders** in the text, such as `[IMAGE_1]`, `[IMAGE_2]`, `[IMAGE_3]`, and so on. **Generate 2-3 images that illustrate different concepts** from the blog post. 
 
        Your entire response MUST be a single, valid JSON object. Do not include any text, notes, or code fences before or after the JSON object. The JSON object must have these exact keys:
         - "blog_markdown_content": A string containing the full blog post in Markdown, including the image placeholders.
         - "image_prompts": An array of objects. Each object must have two keys:
             1. "placeholder": (e.g., "[IMAGE_1]")
-            2. "prompt":  A detailed, descriptive prompt for an AI image generator **Imagen**. The description should outline a simple, clean, minimalistic technical diagram. Visual style should be 2D. You should describe the components, the layout, and any exact text labels. The goal is to produce a visually neat and easy-to-understand diagram for a technical blog post. If you generate more than one prompt, ensure they illustrate **different concepts**.
+            2. "prompt":  A detailed description for an image. When creating this prompt, you MUST follow these **Image Prompt Guidelines**:
+                - Focus on **spatial separation** rather than connecting arrows.
+                - **Keep it minimalistic** and **simple**. 
+                - Use **clear boundaries** and **distinct sections**.
+                - **Avoid complex arrows**. If needed use simple one or two primary connecting lines, not a complex web
+                - Prefer **side-by-side layouts** or **stacked sections**.
+                - Use **simple geometric shapes**
+                - Specify **exact positioning** (left, right, top, bottom) and use **color coding**.
+                - **Limit use of text within the image; focus on spatial clarity.** 
+                - **If you generate more than one prompt, ensure they illustrate different concepts** from the blog post.
         """
 
     # Google Doc-related prompts
@@ -139,17 +155,33 @@ class PromptTemplates:
     6.  **Conclusion:** Create a final section with the heading "Key Takeaways".
     7.  **Tone:** Write in a clear, informative, and professional tone suitable for a company blog, highlighting YugabyteDB's strengths.
     8.  **Formatting:**  Format the entire output using Markdown syntax. Use # for the main title, ## for section headings, and ** for bold text.
-    9.  **Smart items:** Use configurable smart items like code blocks, bullet points, and links to enhance readability and engagement. Please ensure code blocks around it if code blocks are present.
-    10.  **Length:** The blog post can be of any length. No restriction on words. Use appropriately whatever is needed.
-    11.  **Images:** When you identify an opportunity for an image or diagram, insert a **unique, numbered placeholder** in the text, such as `[IMAGE_1]`, `[IMAGE_2]`, and so on.
+    9.  **CODE BLOCK FORMATTING:** When including code examples, follow these strict rules:
+        - Always use triple backticks with language specification: ```sql, ```python, ```bash, ```yaml, etc.
+        - Include a brief comment above the code block explaining what it does
+        - Ensure proper indentation and syntax highlighting
+        - For SQL, use uppercase keywords (SELECT, FROM, WHERE, CREATE, etc.)
+        - For configuration files, use clear section headers
+        - Add proper spacing before and after code blocks
+    10. **Smart items:** Use configurable smart items like code blocks, bullet points, and links to enhance readability and engagement.
+    11. **Length:** The blog post can be of any length. No restriction on words. Use appropriately whatever is needed.
+    12. **Images:** When you identify opportunities for images or diagrams, insert **multiple unique, numbered placeholders** in the text, such as `[IMAGE_1]`, `[IMAGE_2]`, `[IMAGE_3]`, and so on. **Generate images that illustrate different concepts** from the blog post.
 
     **OUTPUT FORMAT:**
     Your entire response MUST be a single, valid JSON object. Do not include any text, notes, or code fences before or after the JSON object. The JSON object must have these exact keys:
     - "blog_markdown_content": A string containing the full blog post in Markdown, including the image placeholders. IMPORTANT: Use only standard ASCII characters. Avoid smart quotes, em dashes, or other special Unicode characters that can break JSON parsing.
     - "image_prompts": An array of objects. Each object must have two keys:
         1. "placeholder": (e.g., "[IMAGE_1]")
-        2. "prompt": A detailed, descriptive prompt for an AI image generator like **Imagen**. The description should outline a simple, clean, 2D technical diagram with clear labels. If you generate more than one prompt, ensure they illustrate **different concepts**.
-    
+        2. "prompt": A detailed description for an image. When creating this prompt, you MUST follow these **Image Prompt Guidelines**:
+           - Focus on **spatial separation** rather than connecting arrows.
+            - **Keep it minimalistic** and **simple**. 
+            - Use **clear boundaries** and **distinct sections**.
+            - **Avoid complex arrows**. If needed use simple one or two primary connecting lines, not a complex web
+            - Prefer **side-by-side layouts** or **stacked sections**.
+            - Use **simple geometric shapes**
+            - Specify **exact positioning** (left, right, top, bottom) and use **color coding**.
+            - **Limit use of text within the image; focus on spatial clarity.** 
+            - **If you generate more than one prompt, ensure they illustrate different concepts** from the blog post.
+
     **CRITICAL JSON REQUIREMENTS:**
     - Use only standard double quotes (") for strings, not smart quotes
     - Use only standard apostrophes (') not curly apostrophes

@@ -10,17 +10,13 @@ from autoblography import BlogGenerator
 def main():
     """Example usage of AutoBlography"""
     
-    # Set up environment variables (in production, set these in your environment)
-    os.environ["SLACK_TOKEN"] = "xoxb-your-slack-token"
-    os.environ["GOOGLE_PROJECT_ID"] = "your-google-cloud-project-id"
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/path/to/your/service-account-key.json"
-    
     # Initialize the blog generator
     generator = BlogGenerator()
     
     # Example 1: Generate blog from Slack thread
     print("=== Example 1: Slack Thread to Blog ===")
-    slack_thread_url = "https://company.slack.com/archives/C1234567/p1234567890123456"
+    # slack_thread_url = "https://yugabyte.slack.com/archives/C017TTZ9EV7/p1743650463482219"
+    slack_thread_url = "https://yugabyte.slack.com/archives/C017TTZ9EV7/p1751000062671159"
     
     try:
         output_file = generator.generate_from_slack(slack_thread_url)

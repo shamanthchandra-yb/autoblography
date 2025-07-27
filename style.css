@@ -1,0 +1,145 @@
+/* AutoBlography Word Document Styling */
+
+body {
+    font-family: 'Calibri', 'Arial', sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    margin: 1in;
+    color: #333;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 24pt;
+    font-weight: bold;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 6pt;
+}
+
+h2 {
+    color: #34495e;
+    font-size: 18pt;
+    font-weight: bold;
+    margin-top: 18pt;
+    margin-bottom: 9pt;
+}
+
+h3 {
+    color: #34495e;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 7pt;
+}
+
+/* Code block styling */
+pre {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 12pt;
+    margin: 12pt 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 10pt;
+    line-height: 1.4;
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+
+code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 10pt;
+    background-color: #f8f9fa;
+    padding: 2pt 4pt;
+    border-radius: 3px;
+    color: #e83e8c;
+}
+
+/* SQL specific styling */
+pre.sql {
+    background-color: #f8f9fa;
+    border-left: 4px solid #007acc;
+}
+
+/* Python specific styling */
+pre.python {
+    background-color: #f8f9fa;
+    border-left: 4px solid #3776ab;
+}
+
+/* Bash specific styling */
+pre.bash {
+    background-color: #f8f9fa;
+    border-left: 4px solid #4eaa25;
+}
+
+/* YAML specific styling */
+pre.yaml {
+    background-color: #f8f9fa;
+    border-left: 4px solid #cb171e;
+}
+
+/* Links */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Lists */
+ul, ol {
+    margin: 12pt 0;
+    padding-left: 24pt;
+}
+
+li {
+    margin: 6pt 0;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid #3498db;
+    margin: 12pt 0;
+    padding: 12pt 0 12pt 12pt;
+    background-color: #f8f9fa;
+    font-style: italic;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12pt 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8pt;
+    text-align: left;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+/* Page breaks */
+.page-break {
+    page-break-before: always;
+}
+
+/* Image placeholders */
+.image-placeholder {
+    background-color: #f8f9fa;
+    border: 2px dashed #3498db;
+    padding: 24pt;
+    text-align: center;
+    margin: 12pt 0;
+    color: #7f8c8d;
+    font-style: italic;
+} 

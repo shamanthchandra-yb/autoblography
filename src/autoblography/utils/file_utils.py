@@ -4,6 +4,7 @@ File utilities for saving and converting documents
 
 import pypandoc
 from typing import Dict, Any
+import os
 
 # Download pandoc for document conversion
 pypandoc.download_pandoc()
@@ -19,12 +20,13 @@ def save_markdown_as_word(filename: str, markdown_content: str) -> None:
     """
     print(f"📄 Converting Markdown to Word document: {filename}...")
 
-    # Convert the markdown string to a .docx file
+    # Convert the markdown string to a .docx file with syntax highlighting
     pypandoc.convert_text(
         markdown_content, 
         'docx', 
-        format='markdown_strict', 
-        outputfile=filename
+        format='markdown', 
+        outputfile=filename,
+        extra_args=['--highlight-style=tango']  # Just add syntax highlighting
     )
 
     print(f"✅ Successfully saved to {filename}")

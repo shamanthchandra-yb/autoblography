@@ -30,12 +30,13 @@ def generate_image_from_prompt_imagen(prompt_text: str, output_filename: str) ->
     vertexai.init(project=settings.google_project_id, location=settings.google_location)
 
     # Load the image generation model
-    model = ImageGenerationModel.from_pretrained("imagen-4.0-fast-generate-preview-06-06")
+    # model = ImageGenerationModel.from_pretrained("imagen-4.0-fast-generate-preview-06-06")
+    model = ImageGenerationModel.from_pretrained("imagen-4.0-ultra-generate-preview-06-06")
 
     # Generate the image
     response = model.generate_images(
         prompt=prompt_text,
-        negative_prompt="noisy, overlapped text, clutter, complex background, messy text, spelling mistakes, confusing arrows",
+        negative_prompt="noisy, overlapped text, clutter, complex, complex background, messy text, text-heavy, spelling mistakes, confusing arrows, lavish",
         number_of_images=1,
         guidance_scale=10.0,  # optional, controls creativity
         aspect_ratio=random.choice(["1:1", "4:3", "3:4"])
@@ -146,8 +147,8 @@ def generate_images(blog_assets: Dict[str, Any]) -> str:
                 # Generate image using Imagen
                 generate_image_from_prompt_imagen(prompt, image_path)
                 
-                # Replace placeholder with markdown image syntax
-                markdown_image = f"![{prompt[:50]}...]({image_path})"
+                # Replace placeholder with markdown image syntax (no description text)
+                markdown_image = f"![]({image_path})"
                 blog_content = blog_content.replace(placeholder, markdown_image)
                 
             except Exception as e:
