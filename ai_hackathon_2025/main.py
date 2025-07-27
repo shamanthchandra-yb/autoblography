@@ -67,7 +67,8 @@ def run_gdoc_pipeline(doc_id: str):
     save_markdown_as_word(final_blog_filename, blog_content_with_placeholders)
 
 
-if __name__ == "__main__":
+def main():
+    """Main entry point for the CLI."""
     parser = argparse.ArgumentParser(description="Generate a blog post from a Slack thread or a Google Doc.")
     parser.add_argument("--source", type=str, required=True, choices=['slack', 'gdoc'], help="The source of the content ('slack' or 'gdoc').")
     parser.add_argument("--input", type=str, required=True, help="The Slack thread URL or the Google Doc ID.")
@@ -82,3 +83,7 @@ if __name__ == "__main__":
     else:
         print("Invalid argument. Please use 'slack' or 'gdoc'.")
         exit(1)
+
+
+if __name__ == "__main__":
+    main()
