@@ -72,12 +72,28 @@ chmod +x generate_blog.sh
 ./generate_blog.sh "https://docs.google.com/document/d/1ABC123XYZ/edit" gdoc my_blog.docx
 ```
 
-#### Option 3: Simple Curl (Recommended for sharing)
+#### Option 3: Simple Curl with Live Progress (Recommended for sharing)
 
 ```bash
 # Start the web service
 python web_app.py
 
+# Generate blog with real-time progress logging
+curl -X POST http://localhost:8000/generate-blog-live \
+  -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
+  -F "source_type=slack"
+```
+
+This shows real-time progress like:
+- 🚀 Starting Slack blog generation pipeline...
+- Fetching thread from Channel ID: C1234567...
+- ✅ Successfully fetched 17 messages from the thread.
+- 🤖 Processing Slack conversation...
+- ✅ Cleaning Complete!
+- And more...
+
+**Alternative: Two-step process with download link:**
+```bash
 # Generate blog (returns JSON with download link)
 curl -X POST http://localhost:8000/generate-blog-simple \
   -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
@@ -85,19 +101,11 @@ curl -X POST http://localhost:8000/generate-blog-simple \
 
 # Download the file using the returned download URL
 curl -X GET http://localhost:8000/download/YOUR_DOWNLOAD_ID --output my_blog.docx
-
-# Or use the web interface at http://localhost:8000
 ```
 
-**One-liner for Slack:**
-```bash
-RESPONSE=$(curl -s -X POST http://localhost:8000/generate-blog-simple -F "url=YOUR_SLACK_URL" -F "source_type=slack") && curl -X GET http://localhost:8000$(echo $RESPONSE | grep -o '"/download/[^"]*"' | tr -d '"') --output blog.docx
-```
+**Or use the web interface at http://localhost:8000**
 
-**One-liner for Google Doc:**
-```bash
-RESPONSE=$(curl -s -X POST http://localhost:8000/generate-blog-simple -F "url=YOUR_GDOC_URL" -F "source_type=gdoc") && curl -X GET http://localhost:8000$(echo $RESPONSE | grep -o '"/download/[^"]*"' | tr -d '"') --output blog.docx
-```
+See [simple_curl_guide.md](simple_curl_guide.md) for complete examples and one-liners.
 
 #### Option 4: Original CLI
 
