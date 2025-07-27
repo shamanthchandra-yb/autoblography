@@ -16,6 +16,10 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Request
 import uvicorn
 
+# Load environment variables from .env file if it exists
+from dotenv import load_dotenv
+load_dotenv("test.env")
+
 from autoblography import BlogGenerator
 from autoblography.config.settings import settings
 
