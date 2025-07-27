@@ -8,3 +8,9 @@ protobuf==6.31.1
 pypandoc==1.15
 Requests==2.32.4
 slack-sdk==3.36.0
+
+# Web service dependencies
+fastapi==0.116.1
+uvicorn==0.35.0
+python-multipart==0.0.20
+jinja2==3.1.6
