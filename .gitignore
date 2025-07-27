@@ -182,10 +182,12 @@ images/
 *.svg
 *.mmd
 
-# Service account keys
+# Service account keys and credentials
 *.json
 !package.json
 !pyproject.toml
+credentials/
+hackathon-2025-463220-58174c9d60ed.json
 
 # Logs
 *.log

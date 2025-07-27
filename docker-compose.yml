@@ -6,27 +6,19 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # Slack Configuration
+      # Load all variables from .env file
       - SLACK_TOKEN=${SLACK_TOKEN}
-      
-      # Google Cloud Configuration
       - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
       - GOOGLE_LOCATION=${GOOGLE_LOCATION:-us-central1}
-      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
-      
-      # Kapa AI Configuration
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
       - KAPA_API_KEY=${KAPA_API_KEY}
       - KAPA_BASE_URL=${KAPA_BASE_URL:-https://api.kapa.ai}
-      
-      # AI Configuration
       - VERTEX_AI_MODEL=${VERTEX_AI_MODEL:-gemini-2.0-flash-001}
-      
-      # Output Configuration
       - OUTPUT_DIR=/app/output
       - IMAGE_OUTPUT_DIR=/app/images
     volumes:
-      # Mount credentials file
-      - ./credentials.json:/app/credentials.json:ro
+      # Mount credentials directory
+      - ./credentials:/app/credentials:ro
       # Mount output directories for persistence
       - ./output:/app/output
       - ./images:/app/images

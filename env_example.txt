@@ -1,20 +1,21 @@
-# AutoBlography Environment Variables
-# Copy these to your .env file or set them in your terminal
-
 # Slack Configuration
-SLACK_TOKEN=xoxb-your-slack-token-here
+SLACK_TOKEN=your-slack-bot-token
 
 # Google Cloud Configuration
-GOOGLE_PROJECT_ID=your-google-cloud-project-id
+GOOGLE_PROJECT_ID=your-google-project-id
 GOOGLE_LOCATION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service-account-key.json
+# Note: GOOGLE_APPLICATION_CREDENTIALS is automatically set by Docker
+# Place your Google service account key in credentials/google-credentials.json
 
-# Required: Kapa AI API key for finding relevant blogs
+# Kapa AI Configuration
 KAPA_API_KEY=your-kapa-api-key
+KAPA_BASE_URL=https://api.kapa.ai
 
 # AI Configuration
 VERTEX_AI_MODEL=gemini-2.0-flash-001
 
-# Output Configuration
-OUTPUT_DIR=output
-IMAGE_OUTPUT_DIR=images 
+# Setup Instructions:
+# 1. Copy this file to .env
+# 2. Update the values with your actual credentials
+# 3. Place your Google service account JSON key in credentials/google-credentials.json
+# 4. Ensure credentials/ directory is in .gitignore 

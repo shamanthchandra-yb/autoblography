@@ -4,12 +4,11 @@ FROM python:3.10-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies needed for pandoc download
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    wget \
-    curl \
+    pandoc \
     binutils \
-    dpkg \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
@@ -25,8 +24,11 @@ COPY . .
 # Install the autoblography package in development mode
 RUN pip install -e .
 
-# Create directories for output and images
-RUN mkdir -p output images
+# Create necessary directories
+RUN mkdir -p output images credentials
+
+# Set proper permissions
+RUN chmod 755 output images credentials
 
 # Expose port
 EXPOSE 8000
