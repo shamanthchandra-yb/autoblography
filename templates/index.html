@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AutoBlography - Blog Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="url"], select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .status { margin-top: 20px; padding: 10px; border-radius: 4px; }
+        .status.processing { background: #fff3cd; border: 1px solid #ffeaa7; }
+        .status.success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .status.error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h1>🚀 AutoBlography</h1>
+    <p>Generate AI-powered blogs from Slack threads or Google Docs</p>
+    
+    <form id="blogForm" action="/generate-blog" method="post">
+        <div class="form-group">
+            <label for="url">URL:</label>
+            <input type="url" id="url" name="url" required 
+                   placeholder="https://company.slack.com/archives/C1234567/p1234567890123456 or https://docs.google.com/document/d/1ABC123XYZ/edit">
+        </div>
+        
+        <div class="form-group">
+            <label for="source_type">Source Type:</label>
+            <select id="source_type" name="source_type" required>
+                <option value="slack">Slack Thread</option>
+                <option value="gdoc">Google Doc</option>
+            </select>
+        </div>
+        
+        <button type="submit" id="submitBtn">Generate Blog</button>
+    </form>
+    
+    <div id="status" class="status hidden"></div>
+    
+    <script>
+        document.getElementById('blogForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const status = document.getElementById('status');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Generating...';
+            status.className = 'status processing';
+            status.textContent = '🚀 Starting blog generation... This may take a few minutes.';
+            status.classList.remove('hidden');
+            
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch('/generate-blog', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'generated_blog.docx';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    status.className = 'status success';
+                    status.textContent = '✅ Blog generated successfully! Download started.';
+                } else {
+                    const errorText = await response.text();
+                    status.className = 'status error';
+                    status.textContent = '❌ Error: ' + errorText;
+                }
+            } catch (error) {
+                status.className = 'status error';
+                status.textContent = '❌ Network error: ' + error.message;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Generate Blog';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  autoblography-web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # Slack Configuration
+      - SLACK_TOKEN=${SLACK_TOKEN}
+      
+      # Google Cloud Configuration
+      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+      - GOOGLE_LOCATION=${GOOGLE_LOCATION:-us-central1}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
+      
+      # Kapa AI Configuration
+      - KAPA_API_KEY=${KAPA_API_KEY}
+      - KAPA_BASE_URL=${KAPA_BASE_URL:-https://api.kapa.ai}
+      
+      # AI Configuration
+      - VERTEX_AI_MODEL=${VERTEX_AI_MODEL:-gemini-2.0-flash-001}
+      
+      # Output Configuration
+      - OUTPUT_DIR=/app/output
+      - IMAGE_OUTPUT_DIR=/app/images
+    volumes:
+      # Mount credentials file
+      - ./credentials.json:/app/credentials.json:ro
+      # Mount output directories for persistence
+      - ./output:/app/output
+      - ./images:/app/images
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 
