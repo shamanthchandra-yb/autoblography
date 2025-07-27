@@ -67,12 +67,21 @@ async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/health")
-async def health_check():
+async def health_check(request: Request = None):
     """Health check endpoint"""
-    return {"status": "healthy", "timestamp": time.time()}
+    response = {"status": "healthy", "timestamp": time.time()}
+    
+    # Add server info if request is available
+    if request:
+        server_host = request.headers.get("host", "localhost:8000")
+        if ":" not in server_host:
+            server_host += ":8000"
+        response["server_url"] = f"http://{server_host}"
+    
+    return response
 
 @app.post("/generate-blog")
-async def generate_blog(url: str = Form(...), source_type: str = Form(...)):
+async def generate_blog(url: str = Form(...), source_type: str = Form(...), request: Request = None):
     """Generate a blog post with real-time progress logs and provide download link"""
     
     # Validate environment variables
@@ -84,6 +93,15 @@ async def generate_blog(url: str = Form(...), source_type: str = Form(...)):
         raise HTTPException(status_code=400, detail="Invalid Slack URL format")
     elif source_type == "gdoc" and "docs.google.com" not in url:
         raise HTTPException(status_code=400, detail="Invalid Google Doc URL format")
+    
+    # Get the server host for download URLs
+    if request:
+        # Use the actual request host (works for both localhost and VM IP)
+        server_host = request.headers.get("host", "localhost:8000")
+        if ":" not in server_host:
+            server_host += ":8000"
+    else:
+        server_host = "localhost:8000"
     
     async def generate_with_logging():
         """Generator function to yield progress updates"""
@@ -161,7 +179,7 @@ async def generate_blog(url: str = Form(...), source_type: str = Form(...)):
             yield f"📄 Output file: {os.path.basename(output_file)}\n"
             yield f"📊 File size: {os.path.getsize(output_file) / 1024:.0f}KB\n"
             yield f"🎉 Download your blog here:\n"
-            yield f"🔗 curl -X GET http://localhost:8000/download/{file_id} --output {os.path.basename(output_file)}\n"
+            yield f"🔗 curl -X GET http://{server_host}/download/{file_id} --output {os.path.basename(output_file)}\n"
             
         except Exception as e:
             yield f"❌ Error: {str(e)}\n"
