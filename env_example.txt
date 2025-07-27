@@ -1,0 +1,20 @@
+# AutoBlography Environment Variables
+# Copy these to your .env file or set them in your terminal
+
+# Slack Configuration
+SLACK_TOKEN=xoxb-your-slack-token-here
+
+# Google Cloud Configuration
+GOOGLE_PROJECT_ID=your-google-cloud-project-id
+GOOGLE_LOCATION=us-central1
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service-account-key.json
+
+# Required: Kapa AI API key for finding relevant blogs
+KAPA_API_KEY=your-kapa-api-key
+
+# AI Configuration
+VERTEX_AI_MODEL=gemini-2.0-flash-001
+
+# Output Configuration
+OUTPUT_DIR=output
+IMAGE_OUTPUT_DIR=images 
