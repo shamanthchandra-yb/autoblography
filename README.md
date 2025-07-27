@@ -12,7 +12,9 @@ AutoBlography is an intelligent tool that transforms your internal technical dis
 - **Automatic Image Generation**: Create technical diagrams and illustrations using AI
 - **Smart Content Linking**: Find and link to relevant existing documentation and blogs
 - **Multiple Output Formats**: Generate Word documents (.docx) with proper formatting
-- **Configurable Prompts**: Customize AI behavior for different content types and audiences
+- **Real-time Progress Logging**: See exactly what's happening during blog generation
+- **Web Service**: Simple HTTP API for integration with other tools
+- **Multiple Usage Options**: CLI, web interface, and bash scripts for different workflows
 
 ## 🚀 Quick Start
 
@@ -47,29 +49,56 @@ AutoBlography is an intelligent tool that transforms your internal technical dis
 
 ### Usage
 
-#### Generate Blog from Slack Thread
+#### Option 1: Simple CLI (Recommended)
 
 ```bash
+# Generate blog with real-time progress logging
+python cli_with_logs.py --url "https://company.slack.com/archives/C1234567/p1234567890123456" --source slack --output "my_blog.docx"
+
+# Generate from Google Doc
+python cli_with_logs.py --url "https://docs.google.com/document/d/1ABC123XYZ/edit" --source gdoc --output "my_blog.docx"
+```
+
+#### Option 2: Bash Script (Easiest)
+
+```bash
+# Make script executable (first time only)
+chmod +x generate_blog.sh
+
+# Generate blog with colored progress output
+./generate_blog.sh "https://company.slack.com/archives/C1234567/p1234567890123456" slack my_blog.docx
+
+# Generate from Google Doc
+./generate_blog.sh "https://docs.google.com/document/d/1ABC123XYZ/edit" gdoc my_blog.docx
+```
+
+#### Option 3: Web Service
+
+```bash
+# Start the web service
+python web_app.py
+
+# Use curl to generate blog
+curl -X POST http://localhost:8000/generate-blog \
+  -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
+  -F "source_type=slack" \
+  --output my_blog.docx
+
+# Or use the web interface at http://localhost:8000
+```
+
+#### Option 4: Original CLI
+
+```bash
+# Basic CLI without progress logging
 python -m autoblography --source slack --input "https://company.slack.com/archives/C1234567/p1234567890123456"
-```
-
-#### Generate Blog from Google Doc
-
-```bash
-python -m autoblography --source gdoc --input "https://docs.google.com/document/d/1ABC123XYZ/edit"
-```
-
-#### Specify Output Filename
-
-```bash
-python -m autoblography --source slack --input "https://..." --output "my_blog_post.docx"
 ```
 
 ## 📁 Project Structure
 
 ```
 autoblography/
-├── src/autoblography/
+├── src/autoblography/           # Main package
 │   ├── __init__.py              # Package initialization
 │   ├── __main__.py              # CLI entry point
 │   ├── core/
@@ -92,6 +121,10 @@ autoblography/
 │       ├── __init__.py
 │       ├── settings.py          # Application settings
 │       └── prompts.py           # AI prompt templates
+├── cli_with_logs.py             # CLI tool with real-time logging
+├── generate_blog.sh             # Bash script for easy blog generation
+├── web_app.py                   # FastAPI web service
+├── templates/                   # Web interface templates
 ├── tests/                       # Test suite
 ├── docs/                        # Documentation
 ├── examples/                    # Usage examples
@@ -109,8 +142,8 @@ autoblography/
 | `SLACK_TOKEN` | Yes | Slack API token | - |
 | `GOOGLE_PROJECT_ID` | Yes | Google Cloud project ID | - |
 | `GOOGLE_LOCATION` | No | Google Cloud location | `us-central1` |
-| `VERTEX_AI_MODEL` | No | AI model to use | `gemini-1.5-flash` |
-| `KAPA_API_KEY` | No | Kapa AI API key | - |
+| `VERTEX_AI_MODEL` | No | AI model to use | `gemini-2.0-flash-001` |
+| `KAPA_API_KEY` | Yes | Kapa AI API key for finding relevant blogs | - |
 | `OUTPUT_DIR` | No | Output directory | `output` |
 | `IMAGE_OUTPUT_DIR` | No | Image output directory | `images` |
 
@@ -170,25 +203,25 @@ autoblography/
 
 ## 📝 How It Works
 
-### Slack Thread Processing
+### Blog Generation Process
 
-1. **Fetch Messages**: Retrieve all messages from the specified Slack thread
-2. **Clean Content**: Remove sensitive information and anonymize participants
-3. **Generate Ideas**: AI analyzes the conversation to create blog post ideas
-4. **Find References**: Search for relevant existing documentation and blogs
-5. **Create Content**: Generate structured blog post with proper formatting
-6. **Add Images**: Create technical diagrams and illustrations
-7. **Export**: Save as Word document with full formatting
+1. **Fetch Content**: Retrieve messages from Slack thread or content from Google Doc
+2. **Clean & Process**: Remove sensitive information, anonymize participants, and structure content
+3. **Generate Ideas**: AI analyzes the content to create blog post ideas and target audience
+4. **Find References**: Search for relevant existing documentation and blogs using Kapa AI
+5. **Create Content**: Generate structured blog post with proper formatting and sections
+6. **Add Images**: Create technical diagrams and illustrations using AI image generation
+7. **Export**: Save as Word document (.docx) with full formatting and embedded images
 
-### Google Docs Processing
+### Real-time Progress Tracking
 
-1. **Read Document**: Extract text, images, and comments from Google Doc
-2. **Enrich Context**: Follow links and gather additional content
-3. **Generate Ideas**: AI analyzes the document to create blog post ideas
-4. **Find References**: Search for relevant existing documentation and blogs
-5. **Create Content**: Generate structured blog post with proper formatting
-6. **Add Images**: Create technical diagrams and illustrations
-7. **Export**: Save as Word document with full formatting
+All tools now provide real-time feedback showing:
+- ✅ Environment validation
+- 🔄 Content processing steps
+- 🤖 AI model interactions
+- 🎨 Image generation progress
+- 📄 File creation and download status
+- ❌ Error handling with clear messages
 
 ## 🤝 Contributing
 
@@ -213,6 +246,36 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Google Docs API** for document processing
 - **Kapa AI** for intelligent content discovery
 - **Pandoc** for document conversion
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**"Address already in use" error:**
+```bash
+# Kill existing web service
+pkill -f "python web_app.py"
+# Then restart
+python web_app.py
+```
+
+**"Command not found: python":**
+```bash
+# Use python3 instead
+python3 web_app.py
+# Or activate virtual environment
+source venv/bin/activate && python web_app.py
+```
+
+**Environment validation fails:**
+- Check all required environment variables are set
+- Verify Google Cloud credentials are valid
+- Ensure Slack token has proper permissions
+
+**Blog generation fails:**
+- Check URL format (must be valid Slack thread or Google Doc)
+- Verify you have access to the content
+- Check internet connection for AI model access
 
 ## 📞 Support
 
