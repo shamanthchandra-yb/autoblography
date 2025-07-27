@@ -175,6 +175,7 @@ images/
 *.md
 !README.md
 !USAGE.md
+!simple_curl_guide.md
 *.png
 *.jpg
 *.jpeg
