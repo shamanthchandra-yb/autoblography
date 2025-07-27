@@ -1,0 +1,10 @@
+google-api-python-client==2.177.0
+google-cloud-aiplatform==1.105.0
+langchain-core==0.3.72
+langchain-google-vertexai==2.0.27
+llama-index==0.12.52
+llama-index-readers-web==0.4.5
+protobuf==6.31.1
+pypandoc==1.15
+Requests==2.32.4
+slack-sdk==3.36.0
