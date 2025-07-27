@@ -72,19 +72,31 @@ chmod +x generate_blog.sh
 ./generate_blog.sh "https://docs.google.com/document/d/1ABC123XYZ/edit" gdoc my_blog.docx
 ```
 
-#### Option 3: Web Service
+#### Option 3: Simple Curl (Recommended for sharing)
 
 ```bash
 # Start the web service
 python web_app.py
 
-# Use curl to generate blog
-curl -X POST http://localhost:8000/generate-blog \
+# Generate blog (returns JSON with download link)
+curl -X POST http://localhost:8000/generate-blog-simple \
   -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
-  -F "source_type=slack" \
-  --output my_blog.docx
+  -F "source_type=slack"
+
+# Download the file using the returned download URL
+curl -X GET http://localhost:8000/download/YOUR_DOWNLOAD_ID --output my_blog.docx
 
 # Or use the web interface at http://localhost:8000
+```
+
+**One-liner for Slack:**
+```bash
+RESPONSE=$(curl -s -X POST http://localhost:8000/generate-blog-simple -F "url=YOUR_SLACK_URL" -F "source_type=slack") && curl -X GET http://localhost:8000$(echo $RESPONSE | grep -o '"/download/[^"]*"' | tr -d '"') --output blog.docx
+```
+
+**One-liner for Google Doc:**
+```bash
+RESPONSE=$(curl -s -X POST http://localhost:8000/generate-blog-simple -F "url=YOUR_GDOC_URL" -F "source_type=gdoc") && curl -X GET http://localhost:8000$(echo $RESPONSE | grep -o '"/download/[^"]*"' | tr -d '"') --output blog.docx
 ```
 
 #### Option 4: Original CLI
@@ -92,6 +104,16 @@ curl -X POST http://localhost:8000/generate-blog \
 ```bash
 # Basic CLI without progress logging
 python -m autoblography --source slack --input "https://company.slack.com/archives/C1234567/p1234567890123456"
+```
+
+#### Option 5: Direct Download (Legacy)
+
+```bash
+# Direct download without progress info
+curl -X POST http://localhost:8000/generate-blog \
+  -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
+  -F "source_type=slack" \
+  --output my_blog.docx
 ```
 
 ## 📁 Project Structure
