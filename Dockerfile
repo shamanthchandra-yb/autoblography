@@ -4,9 +4,12 @@ FROM python:3.10-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies needed for pandoc download
 RUN apt-get update && apt-get install -y \
-    pandoc \
+    wget \
+    curl \
+    binutils \
+    dpkg \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
