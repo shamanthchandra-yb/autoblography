@@ -7,7 +7,7 @@ class SlackApp:
     def __init__(
             self,
             # It's best practice to load tokens from environment variables
-            token: str = "REMOVED32648550757-7530099976258-v4LJk2i9kkP8T7y7RA6hH2l0",
+            token: str = "",
     ):
         self.client = WebClient(token=token)
 
