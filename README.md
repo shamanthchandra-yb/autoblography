@@ -2,7 +2,7 @@
 
 **AI-powered blog generation from Slack threads and Google Docs**
 
-AutoBlography is an intelligent tool that transforms your internal technical discussions and documents into polished, publication-ready blog posts. It uses advanced AI to clean, structure, and enhance content while maintaining the technical accuracy and insights from your original sources.
+AutoBlography transforms internal technical discussions and documents into polished, publication-ready blog posts using AI. It uses advanced AI to clean, structure, and enhance content while maintaining technical accuracy and insights.
 
 ## ✨ Features
 
@@ -14,7 +14,6 @@ AutoBlography is an intelligent tool that transforms your internal technical dis
 - **Multiple Output Formats**: Generate Word documents (.docx) with proper formatting
 - **Real-time Progress Logging**: See exactly what's happening during blog generation
 - **Web Service**: Simple HTTP API for integration with other tools
-- **Multiple Usage Options**: CLI, web interface, and bash scripts for different workflows
 
 ## 🚀 Quick Start
 
@@ -34,9 +33,9 @@ AutoBlography is an intelligent tool that transforms your internal technical dis
    cd autoblography
    ```
 
-2. **Install the package**
+2. **Install dependencies**
    ```bash
-   pip install -e .
+   pip install -r requirements.txt
    ```
 
 3. **Set up environment variables**
@@ -49,17 +48,30 @@ AutoBlography is an intelligent tool that transforms your internal technical dis
 
 ### Usage
 
-#### Option 1: Simple CLI (Recommended)
+#### Option 1: CLI with Logs (Recommended)
 
 ```bash
-# Generate blog with real-time progress logging
-python cli_with_logs.py --url "https://company.slack.com/archives/C1234567/p1234567890123456" --source slack --output "my_blog.docx"
+# Generate blog from Slack thread
+python cli_with_logs.py --url "https://company.slack.com/archives/C1234567/p1234567890123456" --source slack
 
 # Generate from Google Doc
-python cli_with_logs.py --url "https://docs.google.com/document/d/1ABC123XYZ/edit" --source gdoc --output "my_blog.docx"
+python cli_with_logs.py --url "https://docs.google.com/document/d/1ABC123XYZ/edit" --source gdoc
 ```
 
-#### Option 2: Bash Script (Easiest)
+#### Option 2: Web Service
+
+```bash
+# Start the web service
+python web_app.py
+
+# Then visit http://localhost:8000
+# Or use curl:
+curl -X POST http://localhost:8000/generate-blog \
+  -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
+  -F "source_type=slack"
+```
+
+#### Option 3: Bash Script
 
 ```bash
 # Make script executable (first time only)
@@ -67,61 +79,13 @@ chmod +x generate_blog.sh
 
 # Generate blog with colored progress output
 ./generate_blog.sh "https://company.slack.com/archives/C1234567/p1234567890123456" slack my_blog.docx
-
-# Generate from Google Doc
-./generate_blog.sh "https://docs.google.com/document/d/1ABC123XYZ/edit" gdoc my_blog.docx
 ```
 
-#### Option 3: Simple Curl with Live Progress (Recommended for sharing)
+#### Option 4: Package CLI
 
 ```bash
-# Start the web service
-python web_app.py
-
-# Generate blog with real-time progress logging
-curl -X POST http://localhost:8000/generate-blog-live \
-  -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
-  -F "source_type=slack"
-```
-
-This shows real-time progress like:
-- 🚀 Starting Slack blog generation pipeline...
-- Fetching thread from Channel ID: C1234567...
-- ✅ Successfully fetched 17 messages from the thread.
-- 🤖 Processing Slack conversation...
-- ✅ Cleaning Complete!
-- And more...
-
-**Alternative: Two-step process with download link:**
-```bash
-# Generate blog (returns JSON with download link)
-curl -X POST http://localhost:8000/generate-blog-simple \
-  -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
-  -F "source_type=slack"
-
-# Download the file using the returned download URL
-curl -X GET http://localhost:8000/download/YOUR_DOWNLOAD_ID --output my_blog.docx
-```
-
-**Or use the web interface at http://localhost:8000**
-
-See [simple_curl_guide.md](simple_curl_guide.md) for complete examples and one-liners.
-
-#### Option 4: Original CLI
-
-```bash
-# Basic CLI without progress logging
+# Use the installed package
 python -m autoblography --source slack --input "https://company.slack.com/archives/C1234567/p1234567890123456"
-```
-
-#### Option 5: Direct Download (Legacy)
-
-```bash
-# Direct download without progress info
-curl -X POST http://localhost:8000/generate-blog \
-  -F "url=https://company.slack.com/archives/C1234567/p1234567890123456" \
-  -F "source_type=slack" \
-  --output my_blog.docx
 ```
 
 ## 📁 Project Structure
@@ -198,40 +162,7 @@ autoblography/
 3. **Install the app** to your workspace
 4. **Copy the Bot User OAuth Token** and set it as `SLACK_TOKEN`
 
-## 🔧 Development
-
-### Setting up Development Environment
-
-1. **Clone and install in development mode**
-   ```bash
-   git clone https://github.com/yourusername/autoblography.git
-   cd autoblography
-   pip install -e ".[dev]"
-   ```
-
-2. **Install pre-commit hooks**
-   ```bash
-   pre-commit install
-   ```
-
-3. **Run tests**
-   ```bash
-   pytest tests/
-   ```
-
-### Adding New Features
-
-1. **Create feature branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make changes** following the existing code structure
-3. **Add tests** for new functionality
-4. **Update documentation** as needed
-5. **Submit pull request**
-
-## 📝 How It Works
+## 🔧 How It Works
 
 ### Blog Generation Process
 
@@ -245,7 +176,7 @@ autoblography/
 
 ### Real-time Progress Tracking
 
-All tools now provide real-time feedback showing:
+All tools provide real-time feedback showing:
 - ✅ Environment validation
 - 🔄 Content processing steps
 - 🤖 AI model interactions
@@ -253,70 +184,21 @@ All tools now provide real-time feedback showing:
 - 📄 File creation and download status
 - ❌ Error handling with clear messages
 
-## 🤝 Contributing
+## 🔧 Development
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+### Setting up Development Environment
 
-### Development Setup
+1. **Clone and install in development mode**
+   ```bash
+   git clone https://github.com/yourusername/autoblography.git
+   cd autoblography
+   pip install -r requirements.txt
+   ```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Google Vertex AI** for powerful AI models
-- **Slack API** for seamless integration
-- **Google Docs API** for document processing
-- **Kapa AI** for intelligent content discovery
-- **Pandoc** for document conversion
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**"Address already in use" error:**
-```bash
-# Kill existing web service
-pkill -f "python web_app.py"
-# Then restart
-python web_app.py
-```
-
-**"Command not found: python":**
-```bash
-# Use python3 instead
-python3 web_app.py
-# Or activate virtual environment
-source venv/bin/activate && python web_app.py
-```
-
-**Environment validation fails:**
-- Check all required environment variables are set
-- Verify Google Cloud credentials are valid
-- Ensure Slack token has proper permissions
-
-**Blog generation fails:**
-- Check URL format (must be valid Slack thread or Google Doc)
-- Verify you have access to the content
-- Check internet connection for AI model access
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/yourusername/autoblography/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/autoblography/discussions)
-- **Email**: your.email@example.com
-
-## 🔄 Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for a list of changes and version history.
-
+2. **Run tests**
+   ```bash
+   pytest tests/
+   ```
 ---
 
-**Made with ❤️ for the developer community** 
+**Built for AI Hackathon 2025** 🚀 
